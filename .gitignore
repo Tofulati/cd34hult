@@ -1,0 +1,8 @@
+# large files
+barcodes.tsv.gz
+features.tsv.gz
+matrix.mtx.gz
+hultCD34_full.RDS
+
+# references
+/References

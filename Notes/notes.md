@@ -1,0 +1,22 @@
+Taken from: https://www.biorxiv.org/content/10.1101/2024.05.03.592310v1.full#F1 
+
+## Missing Genes
+- We conducted simulations to benchmark *CAT in scenarios where the reference and query datasets have only partially overlapping GEPs (Methods). We simulated two reference datasets of 100,000 cells and a query dataset of 20,000 cells. Each cell could express up to eleven GEPs, including one of ten mutually exclusive subset GEPs and up to ten non-subset GEPs. One reference dataset included all 16 GEPs in the query data as well as four additional GEPs. The other reference dataset was missing four GEPs present in the query (Figure 1B). We then learned GEPs from each reference dataset with cNMF and fit them to the query using *CAT. The __reference and query datasets shared only 90% of genes in common__, as datasets rarely share all genes. *CAT accurately inferred the usage of GEPs that overlapped between the reference and query datasets (Pearson R>0.7) (Figure 1C-D). *CAT had low predicted usage of the extra GEPs in the reference panel that were not in the query dataset (Figure S1A). Surprisingly, *CAT obtained better concordance with the simulated ground truth GEP usages than direct application of cNMF to the query (Figure 1E). This is striking because the reference GEPs had extra or missing GEPs relative to the query, and were learned on different datasets, so could incorporate dataset-specific noise. We hypothesized that *CAT’s increased performance reflected the larger reference datasets enabling more accurate GEP inference. We confirmed this by simulating multiple query datasets with between 100 and 100,000 cells. While cNMFs performance declined for small query datasets, __starCATs remained constant, demonstrating that *CAT can out-perform cNMF when the reference is larger than the query__ (Figure 1F).
+
+## Methods
+- Constructing a catalog of consensus GEPs (cGEPs)
+
+    Next, we identified consensus GEP spectra – I.e. the average of correlated GEP spectra identified by cNMF in different datasets. Normalized input GEP vectors, denoted as gi, were computed by starting from the spectra_tpm output from cNMF, renormalizing each vector to sum to 106, and then dividing each element by the standard deviation of the corresponding gene in the –tpm input to cNMF. Then, we created an undirected graph where the 267 GEPs identified across all reference datasets were represented as nodes g1 … g267. We drew edges, denoted as Ei,j connecting a pair of GEPs gi and gj if the following criteria were met:
+
+    gi and gj were from different datasets
+
+    Rij > 0.5 where Rij denotes the Pearson correlation between gi and gj. For computing Rij, gi and gj were subset to the union of the overdispersed genes for each dataset.
+
+    gi was among the top seven most correlated GEPs with gj, and gj was among the top seven most correlated GEPs with gi with correlation defined as in 2.
+
+    Next, we initialized a set for each GEP: x1 = {g1} … x267 = {g267}. We then iterated through all edges Ei,j in the graph in order of decreasing Rij and merged the sets xi and xj into a new set xi,j = {gi, gj}. If either gi or gj were already members of a merged set from previous merges, we merged their containing sets only if at least two thirds of the GEP pairs in the resulting consensus set were connected by edges. For example, if there is an edge E4,9 and g4 is already merged into a set {g1, g2, g4}, then we only merged {g1, g2, g4} and {g9} if there were also edges E1,9 and E2,9. This resulted in 52 merged sets and 52 unmerged “singleton” sets. We filtered 49 of the 52 singletons and retained 3 that had a biological explanation for being identified in only one dataset.
+
+    Lastly, we subset each GEP to the union of overdispersed genes across all 7 reference datasets that were present in all dataset and obtained the final consensus GEPs by taking the element-wise average GEPs in each merged set. This matrix was used as the reference for TCAT. For marker gene analyses (e.g. Figure 2B, D, Supplementary Item 2), we element-wise averaged the Z-score representation of GEPs output by cNMF for GEPs in a consensus set.
+
+- Find intersecting genes, normalize, and subset them to use as a reference
+- Find starCAT package to match
