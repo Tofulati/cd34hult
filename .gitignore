@@ -3,6 +3,7 @@ barcodes.tsv.gz
 features.tsv.gz
 matrix.mtx.gz
 hultCD34_full.RDS
+/R_to_Py
 
 # references
 /References
