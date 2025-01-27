@@ -5,12 +5,12 @@ We are using exist references and the hultCD34 dataset to produce a usage GEPxge
 File details:
 - starCAT dataset analysis and creation of result usage matrix
 - correlation plots and umapping comparing starCAT and cNMF usage matricies (_viz.ipynb)
+- reference datasets for starcat
+- usage csvs for output of starcat and existing cnmf 
 
 Current known issues:
-- starCAT reference is 35x2000 size, starCAT dataset isn't fully incorporating gene data
-- correlation plots are incorrect, not showing comparison between two datasets
-- umap of cNMF data isn't scaled correctly (not normalized)
-    * created normized dataset (scikit minmax normalization)
-    * correlation umap with normalized data looks blurry
+- data may have issued with correlation values
+- data may be orocessed incorrectly, paper shows backwards matrix factorization
+- correlation umap with normalized data looks blurry
 
 > Still working on, there will be bugs and issues
